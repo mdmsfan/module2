@@ -1,0 +1,60 @@
+function findMaxRepeatCountInWord(word) {
+  // Break up individual words into individual letters.
+  var letters = word.split('')
+  // Count the instances of each letter
+  var lettersCount = {}
+  for (var i = 0; i < letters.length; i++) {
+    var count = 0; 
+      for (var j = 0; j < letters.length; j++) {
+    //unique instance of each letter, make a count of it
+      if (letters[i] === letters[j]) {
+        count = count + 1
+      }
+    }
+    lettersCount[letters[i]] = count; 
+  }
+  //lettersCount is an object with letters broken up by count; 
+  // Iterate all the counts and find the highest
+  var maxCount = lettersCount[letters[0]];
+  for (var key in lettersCount) {
+    if (lettersCount[key] > maxCount) {
+      maxCount = lettersCount[key];
+    }
+  } 
+  // Return this word's max repeat count
+  return maxCount; 
+}
+
+  function findFirstWordWithMostRepeatedChars(text) {
+     var maxRepeatCountOverall = 0;
+     var wordWithMaxRepeatCount = '';
+
+  // Break up input text into words (space-delimited).
+  var words = text.split(" ")
+  // For each word...
+  for (var i = 0; i < words.length; i++) {
+      var repeatCountForWord = findMaxRepeatCountInWord(words[i])
+      if (repeatCountForWord > maxRepeatCountOverall) {
+        maxRepeatCountOverall = repeatCountForWord; 
+        wordWithMaxRepeatCount = words[i]
+      } 
+    }
+      //  If that max repeat count is higher than the overall max repeat count, then
+      //    update maxRepeatCountOverall
+      //    update wordWithMaxRepeatCount
+      
+  return wordWithMaxRepeatCount;
+}
+
+function assertEqual (actual, expected, testName) {
+  if (actual === expected) {
+    console.log('PASSED [' + testName + ']');
+  } else {
+    console.log('FAILED [' + testName + '] Expected "' + expected + '", but got "' + actual + '"');
+  }
+}
+
+assertEqual(findMaxRepeatCountInWord('ooopeiaelskf'), 3, 'finds max repeated letters');
+assertEqual(findFirstWordWithMostRepeatedChars('Limit your space'), 'Limit', 'finds max repeats word when no other word has repeats');
+assertEqual(findFirstWordWithMostRepeatedChars('Limit your spaaace'), 'spaaace', 'finds max repeats word when other words have repeats');
+assertEqual(findFirstWordWithMostRepeatedChars('Limit your spaces'), 'Limit', 'finds 1st word with max repeats when there are ties');
